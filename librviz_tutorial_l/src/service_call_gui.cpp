@@ -26,58 +26,42 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef MYVIZ_H
-#define MYVIZ_H
-#include <QLineEdit>
-#include <QWidget>
-#include <ros/ros.h>
-#include <rviz/panel.h>
-
-namespace rviz
-{
-class Display;
-class RenderPanel;
-class VisualizationManager;
-class firstPanel;
-}
 
 // BEGIN_TUTORIAL
-// Class "MyViz" implements the top level widget for this example.
-class MyViz: public rviz::Panel
+
+// The main() for this "myviz" example is very simple, it just
+// initializes ROS, creates a QApplication, creates the top-level
+// widget (of type "MyViz"), shows it, and runs the Qt event loop.
+
+#include <QApplication>
+
+#include <ros/ros.h>
+#include "myviz.h"
+#include <std_srvs/Trigger.h>
+
+int main(int argc, char **argv)
 {
-Q_OBJECT
-public:
-  MyViz( QWidget* parent = 0 );
-  //virtual void load( const rviz::Config& config );
-  //virtual void save( rviz::Config config ) const;
-  virtual ~MyViz();
-  //ros::ServiceClient client1_;
-  ros::ServiceClient client2_;
-  ros::ServiceClient client3_;
-  ros::ServiceClient client4_;
-  ros::ServiceClient client5_;
-  ros::ServiceClient client6_;
-  ros::ServiceClient client7_;
-  ros::ServiceClient client8_;
+  if( !ros::isInitialized() )
+  {
+    ros::init( argc, argv, "myviz", ros::init_options::AnonymousName );
+  }
+  ros::init(argc,argv, "service_call_gui");
+  if(argc != 2)
+  {
+    ROS_INFO("usage: send signal activate, recieve signal to confrimactivation");
+    return 1;
+  }
 
-private Q_SLOTS:
-  void setThickness( int thickness_percent );
-  void setCellSize( int cell_size_percent );
-  //  void setbutton1Clicked ();
-  void setbutton2Clicked ();
-  void setbutton3Clicked ();
-  void setbutton4Clicked ();
-  void setbutton5Clicked ();
-  void setbutton6Clicked ();
-  void setbutton7Clicked ();
-  void setbutton8Clicked ();
 
-private:
-  rviz::VisualizationManager* manager_;
-  rviz::RenderPanel* render_panel_;
-  rviz::Display* grid_;
-  QLineEdit* file_name_text_;
 
-};
-// END_TUTORIAL
-#endif // MYVIZ_H
+  QApplication app( argc, argv );
+
+  MyViz* myviz = new MyViz();
+  myviz->show();
+
+  app.exec();
+
+  delete myviz;
+  return 0;
+}
+

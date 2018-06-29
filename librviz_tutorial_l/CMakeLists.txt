@@ -35,7 +35,7 @@ add_definitions(-DQT_NO_KEYWORDS)
 ## The generated MOC files are included automatically as headers.
 set(SRC_FILES
   src/myviz.cpp
-  src/main.cpp
+  src/service_call_gui.cpp
 )
 
 ## Add the "myviz" executable and specify the list of source files we
